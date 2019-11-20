@@ -8,7 +8,7 @@ describe('Get not existing endpoint', () => {
       .expect(404)
       .expect(res => {
         expect(res.body).toHaveProperty('status')
-        expect(res.body.status).toEqual('NOT FOUND')
+        expect(res.body.status).toEqual(404)
       })
       .end(done)
   })
