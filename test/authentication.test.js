@@ -6,7 +6,7 @@ describe('Test authentication', () => {
     request(app)
       .post('/example/example-post')
       .send({ name: 'john' })
-      .expect(500)
+      .expect(401)
       .expect(res => {
         expect(res.body.error).toBe('Invalid credentials')
       })
