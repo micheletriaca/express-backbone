@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const authenticator = require('../auth/authenticator-middleware')
+const authenticator = require('../middleware/authenticator')
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
