@@ -24,6 +24,9 @@
   },
   "jest": {
     "testEnvironment": "node",
+    "setupFiles": [
+      "./test/setup-jest"
+    ],
     "coveragePathIgnorePatterns": [
       "/node_modules/"
     ]
@@ -33,6 +36,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "highland": "^2.13.5",
+    "lodash.once": "^4.1.1",
     "morgan": "^1.9.1",
     "pg": "^7.14.0",
     "pg-query-stream": "^2.0.1"

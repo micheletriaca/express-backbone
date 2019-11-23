@@ -8,12 +8,20 @@ class RestError extends Error {
 }
 
 class AuthError extends RestError {
-  constructor (message) {
-    super(401, message)
-  }
+  constructor (message) { super(401, message) }
+}
+
+class NotFoundError extends RestError {
+  constructor () { super(404, 'NOT FOUND') }
+}
+
+class ForbiddenError extends RestError {
+  constructor () { super(403, 'FORBIDDEN') }
 }
 
 module.exports = {
   RestError,
-  AuthError
+  AuthError,
+  NotFoundError,
+  ForbiddenError
 }

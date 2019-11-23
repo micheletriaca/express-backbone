@@ -1,5 +1,5 @@
-const users = require('./users')
-
 module.exports = {
-  ...users
+  ...require('./users'),
+  ...require('./posts'),
+  ...require('./esotheric-query')
 }
