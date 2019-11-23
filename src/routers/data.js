@@ -24,8 +24,8 @@ router
   })
   .use((req, res, next) => {
     if (!sqlQueries[req.key]) return next(new ForbiddenError())
-    const [query, postProcessFn, paramsFn = () => [], streaming = false] = sqlQueries[req.key]
-    req.queryData = { query, params: paramsFn(req) }
+    const [query, streaming = false, postProcessFn] = sqlQueries[req.key](req)
+    req.queryData = { query }
     req.postProcessFn = postProcessFn
     if (streaming) QueryStreamMiddleware(req, res, next)
     else QuerySyncMiddleware(req, res, next)

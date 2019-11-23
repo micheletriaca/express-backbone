@@ -1,16 +1,10 @@
+const sql = require('sql-template-strings')
+
 module.exports = {
-  '/posts': [
-    'SELECT * FROM posts ORDER BY id ASC LIMIT $1 OFFSET $2',
-    null,
-    ({ query }) => {
-      const { size = 10, pageNumber = 1 } = query
-      return [size, (pageNumber - 1) * size]
-    },
-    true
-  ],
-  '/posts/:id': [
-    'SELECT * FROM posts WHERE id = $1',
-    null,
-    req => [req.myParams.id]
-  ]
+  '/posts': ({ query }) => {
+    const { size = 10, pageNumber = 1 } = query
+    return [sql`SELECT * FROM posts ORDER BY id ASC LIMIT ${size} OFFSET ${(pageNumber - 1) * size}`, true]
+  },
+  '/posts/:id': ({ myParams }) => [sql`SELECT * FROM posts WHERE id = ${myParams.id}`],
+  '/users/:id/posts': ({ myParams }) => [sql`SELECT * from posts WHERE user_id = ${myParams.id}`, true]
 }

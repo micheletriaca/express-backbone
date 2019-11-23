@@ -14,10 +14,10 @@ const pool = new Pool({
 const QuerySyncMiddleware = async (req, res, next) => {
   let client
   try {
-    const { query, params = [] } = (req.queryData || {})
+    const { query } = (req.queryData || {})
     if (!query) return next(new RestError(400, 'Invalid query data'))
     client = await pool.connect()
-    const { rows } = await client.query(query, params)
+    const { rows } = await client.query(query)
     client.release()
     if (rows.length === 0) return next(new RestError(404, 'NOT FOUND'))
     const postProcessFn = req.postProcessFn || (x => x)
@@ -31,10 +31,10 @@ const QuerySyncMiddleware = async (req, res, next) => {
 const QueryStreamMiddleware = async (req, res, next) => {
   let releaseOnce
   try {
-    const { query, params = [] } = (req.queryData || {})
+    const { query } = (req.queryData || {})
     if (!query) return next(new RestError(400, 'Invalid query data'))
     const client = await pool.connect()
-    const source = client.query(new QueryStream(query, params))
+    const source = client.query(new QueryStream(query.text, query.values))
     releaseOnce = once(client.release)
     res.setHeader('Content-Type', 'application/json')
     req.on('close', releaseOnce)
