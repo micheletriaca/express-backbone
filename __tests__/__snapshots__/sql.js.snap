@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Db access should fetch a complicated payload 1`] = `
+Object {
+  "level1": Object {
+    "level2": Object {
+      "anotherlevelyet": Object {
+        "email": "jack@example.com",
+        "id": 3,
+        "name": "jack",
+        "posts": Array [
+          Object {
+            "code": 5,
+            "label": "post di jack",
+          },
+        ],
+      },
+    },
+  },
+}
+`;
+
+exports[`Db access should fetch a complicated payload with empty posts 1`] = `
+Object {
+  "level1": Object {
+    "level2": Object {
+      "anotherlevelyet": Object {
+        "email": "gio@example.com",
+        "id": 4,
+        "name": "gio",
+        "posts": Array [],
+      },
+    },
+  },
+}
+`;
+
+exports[`Db access should return single post 1`] = `
+Object {
+  "id": 1,
+  "name": "post di michele",
+  "user_id": 1,
+}
+`;

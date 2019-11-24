@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "test": "jest --coverage"
+    "migrate": "node-pg-migrate",
+    "test": "jest"
   },
   "keywords": [],
   "author": "Michele Triaca",
@@ -24,11 +25,13 @@
   },
   "jest": {
     "testEnvironment": "node",
-    "setupFiles": [
-      "./test/setup-jest"
-    ],
-    "coveragePathIgnorePatterns": [
-      "/node_modules/"
+    "collectCoverage": true,
+    "globalSetup": "./jest-setup",
+    "globalTeardown": "./jest-teardown",
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!**/node_modules/**",
+      "!**/vendor/**"
     ]
   },
   "dependencies": {
@@ -38,6 +41,7 @@
     "highland": "^2.13.5",
     "lodash.once": "^4.1.1",
     "morgan": "^1.9.1",
+    "node-pg-migrate": "^3.23.3",
     "pg": "^7.14.0",
     "pg-query-stream": "^2.0.1",
     "sql-template-strings": "^2.2.2"

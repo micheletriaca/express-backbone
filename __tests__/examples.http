@@ -1,0 +1,27 @@
+GET http://localhost:3010/data/users HTTP/1.1
+authorization: Basic user password
+
+###
+
+GET http://localhost:3010/data/users/2 HTTP/1.1
+authorization: Basic user password
+
+###
+
+GET http://localhost:3010/data/users/2/posts HTTP/1.1
+authorization: Basic user password
+
+###
+
+GET http://localhost:3010/data/posts HTTP/1.1
+authorization: Basic user password
+
+###
+
+GET http://localhost:3010/data/posts/2 HTTP/1.1
+authorization: Basic user password
+
+###
+
+GET http://localhost:3010/data/user-with-posts/2 HTTP/1.1
+authorization: Basic user password

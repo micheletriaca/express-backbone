@@ -2,6 +2,7 @@
   "extends": "standard",
   "overrides": [{
     "files": [
+      "__tests__/**/*.js",
       "**/*.spec.js",
       "**/*.test.js"
     ],
