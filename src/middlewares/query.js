@@ -8,7 +8,7 @@ const { RestError, NotFoundError } = require('../lib/errors')
 const pool = new Pool({
   connectionString: process.env.EB_DATABASE_URL,
   connectionTimeoutMillis: 15000,
-  ssl: false
+  ssl: process.env.EB_DATABASE_SSL || false
 })
 
 const QuerySyncMiddleware = async (req, res, next) => {

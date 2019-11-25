@@ -4,8 +4,10 @@ const authenticator = require('../middlewares/authenticator')
 const { QueryStreamMiddleware, QuerySyncMiddleware } = require('../middlewares/query')
 const sqlQueries = require('../sql')
 const { ForbiddenError } = require('../lib/errors')
+var compression = require('compression')
 
 router
+  .use(compression())
   .use(authenticator)
   .get('/:parent/:id/:childs', (req, res, next) => {
     req.key = `/${req.params.parent}/:id/${req.params.childs}`
