@@ -39,6 +39,6 @@ exports[`Db access should return single post 1`] = `
 Object {
   "id": 1,
   "name": "post di michele",
-  "user_id": 1,
+  "userId": 1,
 }
 `;

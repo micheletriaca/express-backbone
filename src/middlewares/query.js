@@ -1,52 +1,51 @@
-const { Pool } = require('pg')
-const QueryStream = require('pg-query-stream')
 const JSONStream = require('JSONStream')
 const _ = require('highland')
-const once = require('lodash.once')
 const { RestError, NotFoundError } = require('../lib/errors')
+const { createPool, sql } = require('slonik')
+const { createFieldNameTransformationInterceptor } = require('slonik-interceptor-field-name-transformation')
+const { createQueryLoggingInterceptor } = require('slonik-interceptor-query-logging')
 
-const pool = new Pool({
-  connectionString: process.env.EB_DATABASE_URL,
-  connectionTimeoutMillis: 15000,
-  ssl: process.env.EB_DATABASE_SSL || false
+const interceptors = [
+  createQueryLoggingInterceptor(),
+  createFieldNameTransformationInterceptor({
+    format: 'CAMEL_CASE'
+  })
+]
+
+const pool = createPool(process.env.DATABASE_URL, {
+  minimumPoolSize: 5,
+  idleTimeout: 10000000,
+  interceptors
 })
 
+pool.query(sql`SELECT NOW()`) // Warm the db connection
+
 const QuerySyncMiddleware = async (req, res, next) => {
-  let client
   try {
     const { query, postProcessFn = x => x.length === 1 ? x[0] : x } = req.sql
-    client = await pool.connect()
-    const { rows } = await client.query(query)
-    client.release()
+    const { rows } = await pool.query(query)
     if (!rows.length) return next(new NotFoundError())
     res.send(postProcessFn(rows))
   } catch (e) {
-    if (client) client.release()
     next(new RestError(500, e.message))
   }
 }
 
 const QueryStreamMiddleware = async (req, res, next) => {
-  let releaseOnce
+  const jsonStringify = JSONStream.stringify()
   try {
     const { query, postProcessFn = x => x } = req.sql
-    const client = await pool.connect()
-    const source = client.query(new QueryStream(query.text, query.values))
-    releaseOnce = once(client.release)
-    res.setHeader('Content-Type', 'application/json')
-    req.on('close', releaseOnce)
-    source.on('end', releaseOnce)
-    source.on('error', e => {
-      releaseOnce(e)
-      next(new RestError(500, e.message))
+    await pool.stream(query, source => {
+      res.setHeader('Content-Type', 'application/json')
+      req.on('close', () => source.end())
+      _(source)
+        .map(x => x.row)
+        .map(postProcessFn)
+        .pipe(jsonStringify)
+        .pipe(res)
     })
-    _(source)
-      .on('end', releaseOnce)
-      .map(postProcessFn)
-      .pipe(JSONStream.stringify())
-      .pipe(res)
   } catch (e) {
-    if (releaseOnce) releaseOnce()
+    jsonStringify.pause()
     next(new RestError(500, e.message))
   }
 }

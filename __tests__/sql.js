@@ -38,9 +38,17 @@ describe('Db access', () => {
     request(app)
       .get('/data/users/222/posts')
       .auth(process.env.EB_USERNAME, process.env.EB_PASSWORD)
+      .expect(404)
+      .end(done)
+  })
+
+  it('should return 2 posts', done => {
+    request(app)
+      .get('/data/users/2/posts')
+      .auth(process.env.EB_USERNAME, process.env.EB_PASSWORD)
       .expect(200)
       .expect(res => {
-        expect(res.body.length).toBe(0)
+        expect(res.body.length).toBe(2)
       })
       .end(done)
   })

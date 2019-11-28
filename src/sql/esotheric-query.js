@@ -1,4 +1,4 @@
-const sql = require('sql-template-strings')
+const { sql } = require('slonik')
 
 module.exports = {
   '/user-with-posts/:id': ({ myParams }) => [
