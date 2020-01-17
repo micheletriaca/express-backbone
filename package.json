@@ -36,16 +36,18 @@
   },
   "eslintConfig": {
     "extends": "standard",
-    "overrides": [{
-      "files": [
-        "__tests__/**/*.js",
-        "**/*.spec.js",
-        "**/*.test.js"
-      ],
-      "env": {
-        "jest": true
+    "overrides": [
+      {
+        "files": [
+          "__tests__/**/*.js",
+          "**/*.spec.js",
+          "**/*.test.js"
+        ],
+        "env": {
+          "jest": true
+        }
       }
-    }]
+    ]
   },
   "eslintIgnore": [
     "node_modules/**"
