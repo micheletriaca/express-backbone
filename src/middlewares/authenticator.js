@@ -1,6 +1,6 @@
 const { AuthError } = require('../lib/errors')
 const AUTH_VALUE = 'Basic ' + Buffer
-  .from(`${process.env.EB_USERNAME}:${process.env.EB_PASSWORD}`)
+  .from(`${process.env.BASIC_AUTH_USERNAME}:${process.env.BASIC_AUTH_PASSWORD}`)
   .toString('base64')
 
 module.exports = (req, res, next) => {
