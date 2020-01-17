@@ -7,7 +7,7 @@ exports.up = (pgm) => {
     id: 'id',
     name: { type: 'text', notNull: true },
     email: { type: 'text', notNull: true }
-  })
+  }, { ifNotExists: true })
   pgm.createTable('posts', {
     id: 'id',
     user_id: {
@@ -17,8 +17,8 @@ exports.up = (pgm) => {
       onDelete: 'cascade'
     },
     name: { type: 'text', notNull: true }
-  })
-  pgm.createIndex('posts', 'user_id')
+  }, { ifNotExists: true })
+  pgm.createIndex('posts', 'user_id', { ifNotExists: true })
 }
 
 exports.down = (pgm) => {
