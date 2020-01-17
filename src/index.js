@@ -1,5 +1,5 @@
 require('dotenv').config()
-const PORT = process.env.EB_PORT || 3010
+const PORT = process.env.PORT || 3010
 const server = require('./server')
 
 const mainErrorHandler = err => console.error(err)
