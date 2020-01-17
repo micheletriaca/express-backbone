@@ -5,7 +5,7 @@ describe('Test non rest errors', () => {
   it('should log error with full stack trace', done => {
     request(app)
       .post('/example/example-post')
-      .auth(process.env.EB_USERNAME, process.env.EB_PASSWORD)
+      .auth(process.env.BASIC_AUTH_USERNAME, process.env.BASIC_AUTH_PASSWORD)
       .send({ wrongfield: 'john' })
       .expect(500)
       .expect(res => {

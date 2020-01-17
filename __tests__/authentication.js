@@ -16,7 +16,7 @@ describe('Test authentication', () => {
   it('should respond because it is authenticated', done => {
     request(app)
       .post('/example/example-post')
-      .auth(process.env.EB_USERNAME, process.env.EB_PASSWORD)
+      .auth(process.env.BASIC_AUTH_USERNAME, process.env.BASIC_AUTH_PASSWORD)
       .send({ name: 'john' })
       .expect(200, done)
   })
